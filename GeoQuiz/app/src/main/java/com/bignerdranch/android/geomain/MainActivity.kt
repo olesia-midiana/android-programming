@@ -6,6 +6,7 @@ import android.widget.Button
 import android.widget.ImageButton
 import android.widget.TextView
 import android.widget.Toast
+import android.view.Gravity
 import android.view.View
 import kotlin.math.max
 
@@ -75,7 +76,8 @@ class MainActivity : AppCompatActivity() {
             R.string.incorrect_toast
         }
 
-        Toast.makeText(this, messageResId, Toast.LENGTH_SHORT)
-            .show()
+        var toast = Toast.makeText(this, messageResId, Toast.LENGTH_SHORT)
+        toast.setGravity(Gravity.TOP, 0, 0)
+        toast.show()
     }
 }
