@@ -29,6 +29,9 @@ class MainActivity : AppCompatActivity() {
         Question(R.string.question_americas, true),
         Question(R.string.question_asia, true))
 
+    private val numberOfQuestions = questionBank.size
+    private val isQuestionAnswered = BooleanArray(numberOfQuestions) { i -> false }
+
     private var currentIndex = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -91,9 +94,15 @@ class MainActivity : AppCompatActivity() {
     private fun updateQuestion() {
         val questionTextResId = questionBank[currentIndex].textResId
         questionTextView.setText(questionTextResId)
+        trueButton.isEnabled = !isQuestionAnswered[currentIndex]
+        falseButton.isEnabled = !isQuestionAnswered[currentIndex]
     }
 
     private fun checkAnswer(userAnswer: Boolean){
+        trueButton.isEnabled = false
+        falseButton.isEnabled = false
+        isQuestionAnswered[currentIndex] = true
+
         val correctAnswer = questionBank[currentIndex].answer
         val messageResId = if (userAnswer == correctAnswer) {
             R.string.correct_toast
@@ -102,7 +111,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         var toast = Toast.makeText(this, messageResId, Toast.LENGTH_SHORT)
-        toast.setGravity(Gravity.TOP, 0, 0)
+        toast.setGravity(Gravity.BOTTOM, 0, 0)
         toast.show()
     }
 }
