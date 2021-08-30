@@ -31,6 +31,7 @@ class MainActivity : AppCompatActivity() {
 
     private val numberOfQuestions = questionBank.size
     private val isQuestionAnswered = BooleanArray(numberOfQuestions) { i -> false }
+    private val isAnswerCorrect = BooleanArray(numberOfQuestions) { i -> false }
 
     private var currentIndex = 0
 
@@ -104,14 +105,26 @@ class MainActivity : AppCompatActivity() {
         isQuestionAnswered[currentIndex] = true
 
         val correctAnswer = questionBank[currentIndex].answer
-        val messageResId = if (userAnswer == correctAnswer) {
-            R.string.correct_toast
-        } else {
-            R.string.incorrect_toast
-        }
+        isAnswerCorrect[currentIndex] = userAnswer == correctAnswer
 
-        var toast = Toast.makeText(this, messageResId, Toast.LENGTH_SHORT)
-        toast.setGravity(Gravity.BOTTOM, 0, 0)
-        toast.show()
+
+        if (isQuestionAnswered.contains(false)) {
+            val messageResId = if (userAnswer == correctAnswer) {
+                R.string.correct_toast
+            } else {
+                R.string.incorrect_toast
+            }
+            var toast = Toast.makeText(this, messageResId, Toast.LENGTH_SHORT)
+            toast.setGravity(Gravity.BOTTOM, 0, 0)
+            toast.show()
+        } else {
+            val correctAnswersCount = isAnswerCorrect.count { it }
+            val grade = (correctAnswersCount.toFloat() / numberOfQuestions) * 100
+            val gradeString = String.format("%.2f", grade) + " / 100"
+            val messageGrade = resources.getString(R.string.grade_toast) + " " + gradeString
+            var toast = Toast.makeText(this, messageGrade, Toast.LENGTH_SHORT)
+            toast.setGravity(Gravity.BOTTOM, 0, 0)
+            toast.show()
+        }
     }
 }
