@@ -24,35 +24,15 @@ class MainActivity : AppCompatActivity() {
     private lateinit var prevButton: ImageButton
     private lateinit var questionTextView: TextView
 
-    private val questionBank = listOf(
-        Question(R.string.question_australia, true),
-        Question(R.string.question_oceans, true),
-        Question(R.string.question_mideast, false),
-        Question(R.string.question_africa, false),
-        Question(R.string.question_americas, true),
-        Question(R.string.question_asia, true))
-
-    private val numberOfQuestions = questionBank.size
-    private val isQuestionAnswered = BooleanArray(numberOfQuestions) { i -> false }
-    private val isAnswerCorrect = BooleanArray(numberOfQuestions) { i -> false }
-
-    private var currentIndex = 0
+    private val quizViewModelFactory = ViewModelProvider.NewInstanceFactory()
+    private val quizViewModel: QuizViewModel by lazy {
+        ViewModelProvider(this,quizViewModelFactory).get(QuizViewModel::class.java)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         Log.d(TAG, "onCreate(Bundle?) called")
         setContentView(R.layout.activity_main)
-
-        // ViewModelProviders is deprecated
-        //val provider: ViewModelProvider = ViewModelProviders.of(this)
-        //val quizViewModel = provider.get(QuizViewModel::class.java)
-
-        val quizViewModelFactory = ViewModelProvider.NewInstanceFactory()
-        val quizViewModel: QuizViewModel = ViewModelProvider(
-            this,
-            quizViewModelFactory).get(QuizViewModel::class.java)
-
-        Log.d(TAG, "Got a QuizViewModel: $quizViewModel")
 
         trueButton = findViewById(R.id.true_button)
         falseButton = findViewById(R.id.false_button)
@@ -68,17 +48,17 @@ class MainActivity : AppCompatActivity() {
         }
 
         nextButton.setOnClickListener {
-            currentIndex = (currentIndex + 1) % questionBank.size
+            quizViewModel.moveToNext()
             updateQuestion()
         }
 
         prevButton.setOnClickListener {
-            currentIndex = max(0, currentIndex - 1) % questionBank.size
+            quizViewModel.moveToPrev()
             updateQuestion()
         }
 
         questionTextView.setOnClickListener {
-            currentIndex = (currentIndex + 1) % questionBank.size
+            quizViewModel.moveToNext()
             updateQuestion()
         }
 
@@ -107,36 +87,36 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun updateQuestion() {
-        val questionTextResId = questionBank[currentIndex].textResId
+        val questionTextResId = quizViewModel.currentQuestionText
         questionTextView.setText(questionTextResId)
-        trueButton.isEnabled = !isQuestionAnswered[currentIndex]
-        falseButton.isEnabled = !isQuestionAnswered[currentIndex]
+        val enable = !quizViewModel.isCurrentQuestionAnswered
+        trueButton.isEnabled = enable
+        falseButton.isEnabled = enable
     }
 
     private fun checkAnswer(userAnswer: Boolean){
         trueButton.isEnabled = false
         falseButton.isEnabled = false
-        isQuestionAnswered[currentIndex] = true
+        quizViewModel.markQuestionAsAnswered()
 
-        val correctAnswer = questionBank[currentIndex].answer
-        isAnswerCorrect[currentIndex] = userAnswer == correctAnswer
+        val correctAnswer = quizViewModel.currentQuestionAnswer
+        val isAnswerCorrect = userAnswer == correctAnswer
+        quizViewModel.saveQuestionResultConclusion(isAnswerCorrect)
 
+        if (quizViewModel.isLastQuestion) {
+            val gradeString = String.format("%.2f", quizViewModel.grade) + " / 100"
+            val messageGrade = resources.getString(R.string.grade_toast) + " " + gradeString
+            var toast = Toast.makeText(this, messageGrade, Toast.LENGTH_SHORT)
+            toast.setGravity(Gravity.BOTTOM, 0, 0)
+            toast.show()
 
-        if (isQuestionAnswered.contains(false)) {
+        } else {
             val messageResId = if (userAnswer == correctAnswer) {
                 R.string.correct_toast
             } else {
                 R.string.incorrect_toast
             }
             var toast = Toast.makeText(this, messageResId, Toast.LENGTH_SHORT)
-            toast.setGravity(Gravity.BOTTOM, 0, 0)
-            toast.show()
-        } else {
-            val correctAnswersCount = isAnswerCorrect.count { it }
-            val grade = (correctAnswersCount.toFloat() / numberOfQuestions) * 100
-            val gradeString = String.format("%.2f", grade) + " / 100"
-            val messageGrade = resources.getString(R.string.grade_toast) + " " + gradeString
-            var toast = Toast.makeText(this, messageGrade, Toast.LENGTH_SHORT)
             toast.setGravity(Gravity.BOTTOM, 0, 0)
             toast.show()
         }
