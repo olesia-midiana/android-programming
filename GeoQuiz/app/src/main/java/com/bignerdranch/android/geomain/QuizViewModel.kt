@@ -1,11 +1,8 @@
-import android.util.Log
 import androidx.lifecycle.ViewModel
 
 import com.bignerdranch.android.geomain.Question
 import com.bignerdranch.android.geomain.R
 import kotlin.math.max
-
-private const val TAG = "QuizViewModel"
 
 class QuizViewModel : ViewModel() {
 
@@ -21,8 +18,8 @@ class QuizViewModel : ViewModel() {
     )
 
     private val numberOfQuestions = questionBank.size
-    private val isQuestionAnswered = BooleanArray(numberOfQuestions) { i -> false }
-    private val isAnswerCorrect = BooleanArray(numberOfQuestions) { i -> false }
+    private val isQuestionAnswered = BooleanArray(numberOfQuestions) { false }
+    private val isAnswerCorrect = BooleanArray(numberOfQuestions) { false }
 
     val currentQuestionAnswer: Boolean
         get() = questionBank[currentIndex].answer

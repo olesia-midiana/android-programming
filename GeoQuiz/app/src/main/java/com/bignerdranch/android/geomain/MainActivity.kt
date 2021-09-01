@@ -9,7 +9,6 @@ import android.widget.Toast
 import android.view.Gravity
 import android.view.View
 import android.util.Log
-import kotlin.math.max
 
 import androidx.lifecycle.ViewModelProvider
 import QuizViewModel
@@ -44,10 +43,10 @@ class MainActivity : AppCompatActivity() {
         prevButton = findViewById(R.id.prev_button)
         questionTextView = findViewById(R.id.question_text_view)
 
-        trueButton.setOnClickListener { view: View ->
+        trueButton.setOnClickListener {
             checkAnswer(true)
         }
-        falseButton.setOnClickListener { view: View ->
+        falseButton.setOnClickListener {
             checkAnswer(false)
         }
 
@@ -117,7 +116,7 @@ class MainActivity : AppCompatActivity() {
         if (quizViewModel.isLastQuestion) {
             val gradeString = String.format("%.2f", quizViewModel.grade) + " / 100"
             val messageGrade = resources.getString(R.string.grade_toast) + " " + gradeString
-            var toast = Toast.makeText(this, messageGrade, Toast.LENGTH_SHORT)
+            val toast = Toast.makeText(this, messageGrade, Toast.LENGTH_SHORT)
             toast.setGravity(Gravity.BOTTOM, 0, 0)
             toast.show()
 
@@ -127,7 +126,7 @@ class MainActivity : AppCompatActivity() {
             } else {
                 R.string.incorrect_toast
             }
-            var toast = Toast.makeText(this, messageResId, Toast.LENGTH_SHORT)
+            val toast = Toast.makeText(this, messageResId, Toast.LENGTH_SHORT)
             toast.setGravity(Gravity.BOTTOM, 0, 0)
             toast.show()
         }
