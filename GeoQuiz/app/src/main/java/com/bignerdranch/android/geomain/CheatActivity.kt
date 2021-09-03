@@ -8,6 +8,8 @@ import android.content.Context
 import android.widget.Button
 import android.widget.TextView
 import android.app.Activity
+import androidx.lifecycle.ViewModelProvider
+import com.bignerdranch.android.geomain.CheatViewModel
 
 const val EXTRA_ANSWER_SHOWN = "com.bignerdranch.android.geomain.answer_shown"
 private const val EXTRA_ANSWER_IS_TRUE =
@@ -20,13 +22,21 @@ class CheatActivity : AppCompatActivity() {
 
     private var answerIsTrue = false
 
+    private val cheatViewModelFactory = ViewModelProvider.NewInstanceFactory()
+    private val cheatViewModel: CheatViewModel by lazy {
+        ViewModelProvider(this, cheatViewModelFactory).get(CheatViewModel::class.java)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_cheat)
 
+        setActivityResult()
+
         answerIsTrue = intent.getBooleanExtra(EXTRA_ANSWER_IS_TRUE, false)
         answerTextView = findViewById(R.id.answer_text_view)
         showAnswerButton = findViewById(R.id.show_answer_button)
+
         showAnswerButton.setOnClickListener {
             val answerText = when {
                 answerIsTrue -> R.string.true_button
@@ -38,8 +48,14 @@ class CheatActivity : AppCompatActivity() {
     }
 
     private fun setAnswerShownResult(isAnswerShown: Boolean) {
+        cheatViewModel.answerShown = isAnswerShown
+        setActivityResult()
+    }
+
+    private fun setActivityResult()
+    {
         val data = Intent().apply {
-            putExtra(EXTRA_ANSWER_SHOWN, isAnswerShown)
+            putExtra(EXTRA_ANSWER_SHOWN, cheatViewModel.answerShown)
         }
         setResult(Activity.RESULT_OK, data)
     }

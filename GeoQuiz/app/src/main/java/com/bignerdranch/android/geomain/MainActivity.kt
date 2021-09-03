@@ -30,7 +30,7 @@ class MainActivity : AppCompatActivity() {
 
     private val quizViewModelFactory = ViewModelProvider.NewInstanceFactory()
     private val quizViewModel: QuizViewModel by lazy {
-        ViewModelProvider(this,quizViewModelFactory).get(QuizViewModel::class.java)
+        ViewModelProvider(this, quizViewModelFactory).get(QuizViewModel::class.java)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
