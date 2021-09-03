@@ -9,6 +9,7 @@ import android.widget.Toast
 import android.view.Gravity
 import android.view.View
 import android.util.Log
+import android.content.Intent
 
 import androidx.lifecycle.ViewModelProvider
 import QuizViewModel
@@ -22,6 +23,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var falseButton: Button
     private lateinit var nextButton: ImageButton
     private lateinit var prevButton: ImageButton
+    private lateinit var cheatButton: Button
     private lateinit var questionTextView: TextView
 
     private val quizViewModelFactory = ViewModelProvider.NewInstanceFactory()
@@ -41,6 +43,7 @@ class MainActivity : AppCompatActivity() {
         falseButton = findViewById(R.id.false_button)
         nextButton = findViewById(R.id.next_button)
         prevButton = findViewById(R.id.prev_button)
+        cheatButton = findViewById(R.id.cheat_button)
         questionTextView = findViewById(R.id.question_text_view)
 
         trueButton.setOnClickListener {
@@ -58,6 +61,12 @@ class MainActivity : AppCompatActivity() {
         prevButton.setOnClickListener {
             quizViewModel.moveToPrev()
             updateQuestion()
+        }
+
+        cheatButton.setOnClickListener {
+            // Start CheatActivity
+            val intent = Intent(this, CheatActivity::class.java)
+            startActivity(intent)
         }
 
         questionTextView.setOnClickListener {
