@@ -7,7 +7,6 @@ import kotlin.math.max
 class QuizViewModel : ViewModel() {
 
     var currentIndex = 0
-    var isCheater = false
 
     private val questionBank = listOf(
         Question(R.string.question_australia, true),
@@ -21,6 +20,7 @@ class QuizViewModel : ViewModel() {
     private val numberOfQuestions = questionBank.size
     private val isQuestionAnswered = BooleanArray(numberOfQuestions) { false }
     private val isAnswerCorrect = BooleanArray(numberOfQuestions) { false }
+    private val isCheated = BooleanArray(numberOfQuestions) { false }
 
     val currentQuestionAnswer: Boolean
         get() = questionBank[currentIndex].answer
@@ -28,6 +28,8 @@ class QuizViewModel : ViewModel() {
         get() = questionBank[currentIndex].textResId
     val isCurrentQuestionAnswered: Boolean
         get() = isQuestionAnswered[currentIndex]
+    val isCurrentQuestionCheated: Boolean
+        get() = isCheated[currentIndex]
     val isLastQuestion: Boolean
         get() = !isQuestionAnswered.contains(false)
     val grade: Float
@@ -35,6 +37,10 @@ class QuizViewModel : ViewModel() {
 
     fun markQuestionAsAnswered(){
         isQuestionAnswered[currentIndex] = true
+    }
+
+    fun markQuestionAsCheated(){
+        isCheated[currentIndex] = true
     }
 
     fun saveQuestionResultConclusion(conclusion: Boolean){
