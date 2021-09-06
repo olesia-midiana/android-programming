@@ -9,7 +9,7 @@ import android.widget.Button
 import android.widget.TextView
 import android.app.Activity
 import androidx.lifecycle.ViewModelProvider
-import com.bignerdranch.android.geomain.CheatViewModel
+import android.os.Build
 
 const val EXTRA_ANSWER_SHOWN = "com.bignerdranch.android.geomain.answer_shown"
 private const val EXTRA_ANSWER_IS_TRUE =
@@ -19,6 +19,7 @@ class CheatActivity : AppCompatActivity() {
 
     private lateinit var answerTextView: TextView
     private lateinit var showAnswerButton: Button
+    private lateinit var apiLevelTextView: TextView
 
     private var answerIsTrue = false
 
@@ -36,6 +37,10 @@ class CheatActivity : AppCompatActivity() {
         answerIsTrue = intent.getBooleanExtra(EXTRA_ANSWER_IS_TRUE, false)
         answerTextView = findViewById(R.id.answer_text_view)
         showAnswerButton = findViewById(R.id.show_answer_button)
+        apiLevelTextView = findViewById(R.id.api_level_text_view)
+        val apiLevelString =
+            resources.getString(R.string.api_level) + " " + Build.VERSION.SDK_INT.toString()
+        apiLevelTextView.setText(apiLevelString)
 
         showAnswerButton.setOnClickListener {
             val answerText = when {
