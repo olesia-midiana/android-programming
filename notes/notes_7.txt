@@ -1,0 +1,31 @@
+Chapter 7
+
+Distribution dashboard
+https://developer.android.com/about/dashboards/index.html
+
+The oldest version of Android that the exercises in this book support is API level 21 (Lollipop).
+
+In addition to the minimum supported version, you can also set the target version and the compile version.
+All these properties are set in the build.gradle file in your app module.
+
+Build.VERSION_CODES
+developer.android.com/reference/android/os/Build.VERSION_CODES.html
+
+Improvements in Android Lint, potential
+problems caused by calling newer code on older devices can be caught at compile time.
+If you use code from a higher version than your minimum SDK, Android Lint will report build errors.
+
+Android phone
+Settings -> About phone -> Software information -> Build number (tap 7 times)
+to activate developer mode
+Settings -> Developer options -> On
+Stay awake
+USB debugging
+
+In addition to offering new features (like ViewModel ), the Jetpack libraries offer backward compatibility
+for new features on older devices and provide (or attempt to provide) consistent behavior when possible
+across Android versions.
+
+Android developer documentation
+developer.android.com
+
