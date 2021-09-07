@@ -30,6 +30,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var prevButton: ImageButton
     private lateinit var cheatButton: Button
     private lateinit var questionTextView: TextView
+    private lateinit var cheatCounterTextView: TextView
 
     private val quizViewModelFactory = ViewModelProvider.NewInstanceFactory()
     private val quizViewModel: QuizViewModel by lazy {
@@ -51,6 +52,8 @@ class MainActivity : AppCompatActivity() {
         prevButton = findViewById(R.id.prev_button)
         cheatButton = findViewById(R.id.cheat_button)
         questionTextView = findViewById(R.id.question_text_view)
+        cheatCounterTextView = findViewById(R.id.cheat_counter_text_view)
+        updateCheatCounterTextView()
 
         trueButton.setOnClickListener {
             checkAnswer(true)
@@ -102,8 +105,12 @@ class MainActivity : AppCompatActivity() {
             val isCheated = data?.getBooleanExtra(EXTRA_ANSWER_SHOWN, false) ?: false
             if(isCheated){
                 quizViewModel.markQuestionAsCheated()
+                quizViewModel.addCheatToCounter()
             }
         }
+
+        updateCheatCounterTextView()
+        cheatButton.isEnabled = !quizViewModel.isCheatingLimitReached
     }
 
     override fun onStart() {
@@ -168,5 +175,14 @@ class MainActivity : AppCompatActivity() {
             toast.setGravity(Gravity.BOTTOM, 0, 0)
             toast.show()
         }
+    }
+
+    private fun updateCheatCounterTextView()
+    {
+        val remainingCheats = quizViewModel.CHEAT_NUMBER_LIMIT - quizViewModel.cheatCounter
+        val remainingCheatsString =
+            resources.getString(R.string.remaining_cheats) + " " + remainingCheats.toString() + "/" +
+                    quizViewModel.CHEAT_NUMBER_LIMIT.toString()
+        cheatCounterTextView.setText(remainingCheatsString)
     }
 }

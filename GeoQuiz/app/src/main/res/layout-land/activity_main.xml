@@ -59,4 +59,13 @@
             android:layout_gravity="bottom|end"
             android:contentDescription="@string/next_button"/>
     </LinearLayout>
+
+    <TextView
+        android:id="@+id/cheat_counter_text_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:padding="24dp"
+        android:text="" />
+
 </LinearLayout>

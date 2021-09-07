@@ -7,6 +7,9 @@ import kotlin.math.max
 class QuizViewModel : ViewModel() {
 
     var currentIndex = 0
+    var cheatCounter = 0
+
+    val CHEAT_NUMBER_LIMIT = 3;
 
     private val questionBank = listOf(
         Question(R.string.question_australia, true),
@@ -34,6 +37,8 @@ class QuizViewModel : ViewModel() {
         get() = !isQuestionAnswered.contains(false)
     val grade: Float
         get() = (isAnswerCorrect.count { it }.toFloat() / numberOfQuestions) * 100
+    val isCheatingLimitReached: Boolean
+        get() = max(CHEAT_NUMBER_LIMIT - cheatCounter, 0) == 0
 
     fun markQuestionAsAnswered(){
         isQuestionAnswered[currentIndex] = true
@@ -53,5 +58,10 @@ class QuizViewModel : ViewModel() {
 
     fun moveToPrev() {
         currentIndex = max(0, currentIndex - 1) % questionBank.size
+    }
+
+    fun addCheatToCounter()
+    {
+        ++cheatCounter
     }
 }
