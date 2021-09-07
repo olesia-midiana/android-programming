@@ -1,0 +1,53 @@
+Chapter 8
+UI Fragments and the Fragment Manager
+
+CriminalIntent app
+
+Fragment -- a controller object that an activity can deputize to perform tasks.
+
+A fragment managing a UI is known as a UI fragment. A UI fragment has a view of its own that is
+inflated from a layout file.
+
+Some of the new Android Jetpack APIs, such as the navigation controller, work best with fragments.
+
+MVC project (Model, View, Controller)
+
+New Android apps should always be built using the Jetpack ( androidx ) version of fragments.
+
+Fragments were introduced in API level 11, along with the first Android tablets and the sudden need
+for UI flexibility.
+
+But as of Android 9.0 (API 28), the framework version of fragments is deprecated. No further updates
+will be made to this version, so you should not use it for new projects.
+
+CrimeFragment is a controller that interacts with model and view objects. Its job is to present the
+details of a specific crime and update those details as the user changes them.
+
+Fragment.onCreate(Bundle?) is public; Kotlin functions default to public when no visibility modifier
+ is included in the definition. This differs from the Activity.onCreate(Bundle?) function, which is
+ protected.
+ 
+Fragment.onCreate(Bundle?) and other Fragment lifecycle functions must be public, because they
+will be called by whatever activity is hosting the fragment.
+
+Similar to an activity, a fragment has a bundle to which it saves and retrieves its state. You can
+override Fragment.onSaveInstanceState(Bundle) for your own purposes, just as you can override
+Activity.onSaveInstanceState(Bundle).
+
+Also, note what does not happen in Fragment.onCreate(Bundle?) : You do not inflate the fragment’s
+view. You configure the fragment instance in Fragment.onCreate(Bundle?) , but you create and
+configure the fragment’s view in another fragment lifecycle function: onCreateView(LayoutInflater,
+ViewGroup?, Bundle?) .
+
+This function is where you inflate the layout for the fragment’s view and return the inflated View to the
+hosting activity. The LayoutInflater and ViewGroup parameters are necessary to inflate the layout.
+The Bundle will contain data that this function can use to re-create the view from a saved state.
+
+Getting references in Fragment.onCreateView(...) works nearly the same as in
+Activity.onCreate(Bundle?) . The only difference is that you call View.findViewById(Int) on the
+fragment’s view. The Activity.findViewById(Int) function that you used before is a convenience
+function that calls View.findViewById(Int) behind the scenes. The Fragment class does not have a
+corresponding convenience function, so you have to call the real thing.
+
+A good rule of thumb is to have no more than two or three fragments on the
+screen at a time.
