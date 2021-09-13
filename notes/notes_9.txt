@@ -1,0 +1,36 @@
+Chapter 9
+
+This lifecycle is slightly different when the ViewModel is used with a fragment. It still only has
+two states, created or destroyed/nonexistent, but it is now tied to the lifecycle of the fragment
+instead of the activity.
+
+The ViewModel will remain active as long as the fragment’s view is onscreen. The ViewModel will
+persist across rotation (even though the fragment instance will not) and be accessible to the new
+fragment instance.
+
+The ViewModel will be destroyed when the fragment is destroyed. This can happen when the user
+presses the Back button to dismiss the screen. It can also happen if the hosting activity replaces the
+fragment with a different one. Even though the same activity is on the screen, both the fragment and its
+associated ViewModel will be destroyed, since they are no longer needed.
+
+One special case is when you add the fragment transaction to the back stack. When the activity
+replaces the current fragment with a different one, if the transaction is added to the back stack, the
+fragment instance and its ViewModel will not be destroyed. This maintains your state: If the user
+presses the Back button, the fragment transaction is reversed. The original fragment instance is put
+back on the screen, and all the data in the ViewModel is preserved.
+
+RecyclerView does not position items on the screen itself. It delegates that job to the LayoutManager .
+The LayoutManager positions every item and also defines how scrolling works. So if RecyclerView
+tries to do those things when the LayoutManager is not there, the RecyclerView will immediately fall
+over and die.
+
+There are a few built-in LayoutManager s to choose from, and you can find more as third-party libraries.
+You are using the LinearLayoutManager , which will position the items in the list vertically. Later on in
+this book, you will use GridLayoutManager to arrange items in a grid instead.
+
+ViewHolder pattern.
+
+Another key feature of RecyclerView is the animation of items in the list. Animating the addition
+or removal of items in a ListView or GridView is a complex and error-prone task. RecyclerView
+makes this much easier, includes a few built-in animations, and allows for easy customization of these
+animations.
