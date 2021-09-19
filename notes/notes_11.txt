@@ -1,0 +1,45 @@
+Chapter 11
+
+Room is a Jetpack architecture component library that simplifies database setup and access.
+Entities are model classes you create, annotated with the @Entity annotation.
+Room uses SQLite under the hood.
+To tell Room how to convert your data types, you specify a type converter.
+A DAO (data access object) is an interface that contains functions for each database operation you want to perform.
+
+To access database repository pattern is recommended by Google in its Guide to App Architecture
+( developer.android.com/jetpack/docs/guide ).
+A repository class encapsulates the logic for accessing data from a single source or a set of sources.
+
+Singleton classes are destroyed when Android removes your application from memory.
+
+Similar to Activity.onCreate(...) , Application.onCreate() is called by the system when your
+application is first loaded in to memory. That makes it a good place to do any kind of one-time
+initialization operations.
+
+The application instance does not get constantly destroyed and re-created, like your activity or
+fragment classes. It is created when the app launches and destroyed when your app process is
+destroyed.
+
+Application class should be registered it the AndroidManifest.xml
+
+Room disallows all database operations on the main thread.
+
+There are two important rules to consider when you start adding background threads to your apps:
+
+* All long-running tasks should be done on a background thread. This ensures that your main thread
+is free to handle UI-related tasks to keep the UI responsive for your users.
+* The UI can only be updated from the main thread. You will get an error if you try to modify the
+UI from a background thread, so you need to make sure any data generated from a background
+thread is sent to the main thread to update the UI.
+
+LiveData is a data holder class found in the Jetpack lifecycle-extensions library. Room is built
+to work with LiveData .
+
+./gradlew clean build
+Downgrade JDK from 11 to 8
+
+sudo apt-get install openjdk-8-jre
+sudo update-alternatives --config java
+java -version
+
+No need to downgrade, just update gradle packages versions.
