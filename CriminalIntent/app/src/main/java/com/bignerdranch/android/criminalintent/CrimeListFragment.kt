@@ -12,6 +12,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import android.text.format.DateFormat
 
 //import androidx.lifecycle.ViewModelProviders
 
@@ -21,6 +22,7 @@ class CrimeListFragment : Fragment() {
 
     private lateinit var crimeRecyclerView: RecyclerView
     private var adapter: CrimeAdapter? = null
+    private val DATE_PATTERN = "EEEE, MMM d, yyyy"
 
     private val crimeListViewModel: CrimeListViewModel by lazy {
         //ViewModelProviders.of(this).get(CrimeListViewModel::class.java)
@@ -68,7 +70,7 @@ class CrimeListFragment : Fragment() {
         fun bind(crime: Crime) {
             this.crime = crime
             titleTextView.text = this.crime.title
-            dateTextView.text = this.crime.date.toString()
+            dateTextView.text = DateFormat.format(DATE_PATTERN, this.crime.date)
             solvedImageView.visibility = if (crime.isSolved) {
                 View.VISIBLE
             } else {
