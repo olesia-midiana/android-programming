@@ -1,0 +1,10 @@
+Chapter 10
+
+Nested layouts are slower than non-nested.
+ConstraintLayout
+
+Android design guidelines
+developer.android.com/design/index.html
+
+Styles
+MotionLayout
